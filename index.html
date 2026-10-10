@@ -14,7 +14,40 @@
         <th scope="col" class="titleBook">Title</th>
         <th scope="col" class="authorBook">Author</th>
         <th scope="col" class="pagesBook">Pages</th>
+        <th scope="col" class="statusBook">Reading status</th>
       </tr>
     </table>
+    <dialog class="modal-form">
+      <button class="close-form">Close</button>
+      <form action="">
+        <div>
+          <label for="author">Author: </label>
+          <input type="text" name="author" id="author" required />
+        </div>
+        <div>
+          <label for="title">Title: </label>
+          <input type="text" name="title" id="title" required />
+        </div>
+        <div>
+          <label for="pages">Pages: </label>
+          <input type="number" name="pages" id="pages" required />
+        </div>
+        <div>
+          <label for="status">Status</label>
+          <select name="status" id="status" required>
+            <option value="">--Please choose an option--</option>
+            <option value="Not read">Not read</option>
+            <option value="Currently reading">Currently reading</option>
+            <option value="Read">Read</option>
+          </select>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </dialog>
+    <div><button class="show-form">New Book</button></div>
+    <dialog class="modal-message">
+      Book created !
+      <button class="close-message">Close</button>
+    </dialog>
   </body>
 </html>

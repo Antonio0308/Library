@@ -7,7 +7,8 @@ body {
   font-family: Roboto, sans-serif;
   width: 100vw;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 th,
@@ -33,6 +34,15 @@ table {
 
 .titleBook,
 .authorBook,
-.pagesBook {
-  width: 30vw;
+.pagesBook,
+.statusBook {
+  width: calc(90vw / 4);
+}
+
+dialog {
+  border: 3px solid black;
+  width: 300px;
+  padding: 20px;
+  position: absolute;
+  left: 35%;
 }

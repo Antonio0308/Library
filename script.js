@@ -49,6 +49,12 @@ function Book(title, author, pages, readingStatus) {
   this.pages = pages;
   this.readingStatus = readingStatus;
   this.idBook = crypto.randomUUID();
+
+  Book.prototype.changeStatusRead = function () {
+    this.readingStatus =
+      this.readingStatus.toLowerCase() === "read" ? "Not read" : "Read";
+    showTableBooks();
+  };
 }
 
 function addBookToLibrary(title, author, pages, readingStatus) {
@@ -72,13 +78,27 @@ function showTableBooks() {
     const td5 = document.createElement("td");
     td5.textContent = myLibrary[i].readingStatus;
     const td6 = document.createElement("td");
-    const button = document.createElement("button");
-    button.setAttribute("data-id", myLibrary[i].idBook);
-    button.textContent = "Delete";
-    td6.append(button);
-    tr.append(td1, td2, td3, td4, td5, td6);
-    button.addEventListener("click", () => {
-      const id = button.getAttribute("data-id");
+    const btnChangeStatus = document.createElement("button");
+    btnChangeStatus.setAttribute("data-id", myLibrary[i].idBook);
+    btnChangeStatus.textContent = "Change Status";
+    const td7 = document.createElement("td");
+    const btnDelete = document.createElement("button");
+    btnDelete.setAttribute("data-id", myLibrary[i].idBook);
+    btnDelete.textContent = "Delete";
+    td6.append(btnChangeStatus);
+    td7.append(btnDelete);
+    tr.append(td1, td2, td3, td4, td5, td6, td7);
+
+    btnChangeStatus.addEventListener("click", () => {
+      const id = btnChangeStatus.getAttribute("data-id");
+      const book = myLibrary.find((item) => item.idBook === id);
+      if (book) {
+        book.changeStatusRead();
+      }
+    });
+
+    btnDelete.addEventListener("click", () => {
+      const id = btnDelete.getAttribute("data-id");
       myLibraryUpdate(id);
     });
   }

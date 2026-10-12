@@ -36,7 +36,7 @@ table {
 .authorBook,
 .pagesBook,
 .statusBook {
-  width: calc(88vw / 5);
+  width: calc(80vw / 5);
 }
 
 dialog {

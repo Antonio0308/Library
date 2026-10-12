@@ -16,7 +16,8 @@
           <th scope="col" class="authorBook">Author</th>
           <th scope="col" class="pagesBook">Pages</th>
           <th scope="col" class="statusBook">Reading status</th>
-          <th scope="row" class="btn-delete">&nbsp</th>
+          <th scope="row" class="change-status">&nbsp;</th>
+          <th scope="row" class="btn-delete">&nbsp;</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -39,9 +40,8 @@
         <div>
           <label for="status">Status</label>
           <select name="status" id="status" required>
-            <option value="">--Please choose an option--</option>
+            <option value="" selected>--Please choose an option--</option>
             <option value="Not read">Not read</option>
-            <option value="Currently reading">Currently reading</option>
             <option value="Read">Read</option>
           </select>
         </div>

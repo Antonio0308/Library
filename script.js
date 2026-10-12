@@ -1,21 +1,26 @@
 const table = document.querySelector("table");
-const showBtn = document.querySelector(".show-form");
-const closeBtn = document.querySelector(".close-form");
+const showForm = document.querySelector(".show-form");
+const closeDialog = document.querySelector(".close-form");
 const closeMessage = document.querySelector(".close-message");
 const modalMessage = document.querySelector(".modal-message");
 const modalForm = document.querySelector(".modal-form");
 const form = document.querySelector("form");
 const contentMessage = document.querySelector(".content-message");
-const myLibrary = [];
+const tbody = document.querySelector("tbody");
+let myLibrary = [];
 
 let title, author, pages, readingStatus;
 
-showBtn.addEventListener("click", () => {
+showForm.addEventListener("click", () => {
   modalForm.showModal();
 });
 
-closeBtn.addEventListener("click", () => {
+closeDialog.addEventListener("click", () => {
   modalForm.close();
+});
+
+closeMessage.addEventListener("click", () => {
+  modalMessage.close();
 });
 
 form.addEventListener("submit", (e) => {
@@ -38,55 +43,50 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-closeMessage.addEventListener("click", () => {
-  modalMessage.close();
-});
-
 function Book(title, author, pages, readingStatus) {
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.readingStatus = readingStatus;
-  this.id = crypto.randomUUID();
-
-  this.createdBook = function () {
-    return [this.title, this.author, this.pages, this.readingStatus, this.id];
-  };
+  this.idBook = crypto.randomUUID();
 }
 
 function addBookToLibrary(title, author, pages, readingStatus) {
   const book = new Book(title, author, pages, readingStatus);
-  const infoBook = book.createdBook();
-
-  myLibrary.push({
-    title: infoBook[0],
-    author: infoBook[1],
-    pages: infoBook[2],
-    readingStatus: infoBook[3],
-    idBook: infoBook[4],
-  });
+  myLibrary.push(book);
 }
 
 function showTableBooks() {
-  const numBook = myLibrary.length;
-  const booksObject = myLibrary[numBook - 1];
-  const listInfoBooks = [
-    booksObject.title,
-    booksObject.author,
-    booksObject.pages,
-    booksObject.readingStatus,
-  ];
-  const newTr = document.createElement("tr");
-  table.append(newTr);
-  const newTd = document.createElement("td");
-  newTd.setAttribute("scope", "row");
-  newTd.textContent = numBook;
-  newTr.append(newTd);
-  for (let i = 0; i < listInfoBooks.length; i++) {
-    const newTd = document.createElement("td");
-    newTd.textContent = listInfoBooks[i];
-    newTr.append(newTd);
+  tbody.innerHTML = "";
+  for (let i = 0; i < myLibrary.length; i++) {
+    const tr = document.createElement("tr");
+    tbody.append(tr);
+    const td1 = document.createElement("td");
+    td1.textContent = i + 1;
+    const td2 = document.createElement("td");
+    td2.textContent = myLibrary[i].title;
+    const td3 = document.createElement("td");
+    td3.textContent = myLibrary[i].author;
+    const td4 = document.createElement("td");
+    td4.textContent = myLibrary[i].pages;
+    const td5 = document.createElement("td");
+    td5.textContent = myLibrary[i].readingStatus;
+    const td6 = document.createElement("td");
+    const button = document.createElement("button");
+    button.setAttribute("data-id", myLibrary[i].idBook);
+    button.textContent = "Delete";
+    td6.append(button);
+    tr.append(td1, td2, td3, td4, td5, td6);
+    button.addEventListener("click", () => {
+      const id = button.getAttribute("data-id");
+      myLibraryUpdate(id);
+    });
   }
+}
+
+function myLibraryUpdate(id) {
+  myLibrary = myLibrary.filter((item) => item.idBook !== id);
+  showTableBooks();
 }
 
 function bookExist(title, author) {

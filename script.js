@@ -5,9 +5,42 @@ const closeMessage = document.querySelector(".close-message");
 const modalMessage = document.querySelector(".modal-message");
 const modalForm = document.querySelector(".modal-form");
 const form = document.querySelector("form");
+const contentMessage = document.querySelector(".content-message");
 const myLibrary = [];
 
 let title, author, pages, readingStatus;
+
+showBtn.addEventListener("click", () => {
+  modalForm.showModal();
+});
+
+closeBtn.addEventListener("click", () => {
+  modalForm.close();
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  title = formData.get("title");
+  author = formData.get("author");
+  pages = formData.get("pages");
+  readingStatus = formData.get("status");
+  if (bookExist(title, author)) {
+    modalForm.close();
+    contentMessage.textContent = "Book already exist !";
+    modalMessage.showModal();
+  } else {
+    modalForm.close();
+    addBookToLibrary(title, author, pages, readingStatus);
+    showTableBooks();
+    contentMessage.textContent = "Book created !";
+    modalMessage.showModal();
+  }
+});
+
+closeMessage.addEventListener("click", () => {
+  modalMessage.close();
+});
 
 function Book(title, author, pages, readingStatus) {
   this.title = title;
@@ -35,49 +68,35 @@ function addBookToLibrary(title, author, pages, readingStatus) {
 }
 
 function showTableBooks() {
-  for (let i = 0; i < myLibrary.length; i++) {
-    const numBook = i + 1;
-    const booksObject = myLibrary[i];
-    const listInfoBooks = [
-      booksObject.title,
-      booksObject.author,
-      booksObject.pages,
-      booksObject.readingStatus,
-    ];
-    const newTr = document.createElement("tr");
-    table.append(newTr);
+  const numBook = myLibrary.length;
+  const booksObject = myLibrary[numBook - 1];
+  const listInfoBooks = [
+    booksObject.title,
+    booksObject.author,
+    booksObject.pages,
+    booksObject.readingStatus,
+  ];
+  const newTr = document.createElement("tr");
+  table.append(newTr);
+  const newTd = document.createElement("td");
+  newTd.setAttribute("scope", "row");
+  newTd.textContent = numBook;
+  newTr.append(newTd);
+  for (let i = 0; i < listInfoBooks.length; i++) {
     const newTd = document.createElement("td");
-    newTd.textContent = numBook;
+    newTd.textContent = listInfoBooks[i];
     newTr.append(newTd);
-    for (let i = 0; i < listInfoBooks.length; i++) {
-      const newTd = document.createElement("td");
-      newTd.textContent = listInfoBooks[i];
-      newTr.append(newTd);
-    }
   }
 }
 
-showBtn.addEventListener("click", () => {
-  modalForm.showModal();
-});
-
-closeBtn.addEventListener("click", () => {
-  modalForm.close();
-});
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-  title = formData.get("title");
-  author = formData.get("author");
-  pages = formData.get("pages");
-  readingStatus = formData.get("status");
-  modalForm.close();
-  modalMessage.showModal();
-  addBookToLibrary(title, author, pages, readingStatus);
-  showTableBooks();
-});
-
-closeMessage.addEventListener("click", () => {
-  modalMessage.close();
-});
+function bookExist(title, author) {
+  for (let i = 0; i < myLibrary.length; i++) {
+    if (
+      myLibrary[i].title.toUpperCase() === title.toUpperCase() &&
+      myLibrary[i].author.toUpperCase() === author.toUpperCase()
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
